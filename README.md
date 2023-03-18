@@ -1,7 +1,7 @@
 # ASU-simpy
 The depo contains random code for the final hpdm097 assignment
       
-V4.0 contains an ASU model and the answer to the first question (bed capacity needed to achieve an annual target of 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital)
+V4.0 contains a basic working ASU model as specified in the assignment and the answer to the first question (bed capacity needed to achieve an annual target of 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital)
 
 TO DO:
 1) Calculate bed utilisation for the second question ( The managers would also like to know if they can achieve 90% performance and maintain a bed utilisation in excess of 70%)
