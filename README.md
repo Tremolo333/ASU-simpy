@@ -19,3 +19,10 @@ V4.0 contains a basic working ASU model as specified in assignment and the answe
 ## Environment:
 
 These simulation use the conda environment `deploy_st` included in `environment.yml` and the simulation code included in `V4.0 ASU.ipynb`.
+```
+# This command will create a new conda environment with the name "deploy_st" and install all the required packages listed in the environment.yml file.
+conda env create --file environment.yml
+
+# Once the environment is created, activate it by running the following command
+conda activate deploy_st
+```
