@@ -15,3 +15,6 @@ TO DO:
 4) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (he percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
 
 5) Produce an exceptional lab report no less than 900 words (<1000), use ChatGPT to help.
+
+Environment:
+These simulation use the conda environment 'deploy_st' included in 'environment.yml' and the simulation code included in 'V4.0 ASU.ipynb'
