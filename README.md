@@ -18,11 +18,29 @@ V4.0 contains a basic working ASU model as specified in assignment and the answe
 
 ## Environment:
 
-These simulation use the conda environment `deploy_st` included in `environment.yml` and the simulation code included in `V4.0 ASU.ipynb`.
+These simulation use the conda environment `deploy_st` included in `environment.yml` and the simulation code included in `asu_sim_streamlit.py`.
+
+## User Manual
+
+### Bulid and activate conda environment
+
 ```
-# This command will create a new conda environment with the name "deploy_st" and install all the required packages listed in the environment.yml file.
-conda env create --file environment.yml
+# Create a new conda environment with the name "deploy_st" and install all the required packages listed in the environment.yml file.
+conda env create --file binder/environment.yml
 
 # Once the environment is created, activate it by running the following command
 conda activate deploy_st
 ```
+
+### See the interactive simulation model
+1) Open a terminal or ssh into your Linux server 
+```
+# Obtain the link to the simulation by running the following command
+streamlit run asu_sim_streamlit.py
+```
+
+2) Open another terminal and enter the command below
+```
+ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_link] ubuntu@XX.XXX.X.XXX
+```
+3) Copy the simulation link into your local browser to view
