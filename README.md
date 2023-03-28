@@ -17,4 +17,4 @@ TO DO:
 5) Produce an exceptional lab report no less than 900 words (<1000), use ChatGPT to help.
 
 Environment:
-These simulation use the conda environment 'deploy_st' included in 'environment.yml' and the simulation code included in 'V4.0 ASU.ipynb'
+These simulation use the conda environment `deploy_st` included in `environment.yml` and the simulation code included in `V4.0 ASU.ipynb`.
