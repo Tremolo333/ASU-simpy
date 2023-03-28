@@ -9,6 +9,8 @@ dependencies:
   - python=3.8.12
   - scipy=1.6.1
   - simpy=4.0.1
+  - jupyter
+  - jupyterlab=3.6.2
   - pip:
     - streamlit
-    - treat-sim==0.1.0 
+    - treat-sim==0.1.0
