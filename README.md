@@ -44,3 +44,7 @@ streamlit run asu_sim_streamlit.py
 ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_link] ubuntu@XX.XXX.X.XXX
 ```
 3) Copy the simulation link into your local browser to view
+
+## Asseeement Requirement
+
+(TBC)
