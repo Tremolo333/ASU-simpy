@@ -45,6 +45,23 @@ ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_l
 ```
 3) Copy the simulation link into your local browser to view
 
-## Asseeement Requirement
+## Assessment Requirement
 
 (TBC)
+
+## Reference
+```
+@software{monks_thomas_2022_6772475,
+  author       = {Monks, Thomas and
+                  Harper, Alison and
+                  Taylor, J.E, Simon and
+                  Anagnostou, Anastasia},
+  title        = {TomMonks/treatment-centre-sim: v0.4.0},
+  month        = jun,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {v0.4.0},
+  doi          = {10.5281/zenodo.6772475},
+  url          = {https://doi.org/10.5281/zenodo.6772475}
+}
+```
