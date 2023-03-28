@@ -6,7 +6,7 @@ V4.0 contains a basic working ASU model as specified in assignment and the answe
 TO DO:
 1) Calculate bed utilisation for the second question ( The managers would also like to know if they can achieve 90% performance and maintain a bed utilisation in excess of 70%)
 
-2) (Timur)Implement high quality output analysis techniques (WS6). Take into account the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients, adjust the run length.
+2) (Timur) Implement high quality output analysis techniques (WS6). Take into account the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients, adjust the run length.
 
 3) Wrap the model into the streamlit, add various sliders, run button, whatever else (make it look neat and professional)      
                                                                                                                                          
