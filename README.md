@@ -5,7 +5,8 @@ V4.0 contains a basic working ASU model as specified in assignment
 V4.1 added utility function to calculate final results, fixed the problem with the first three patients starting their treatment at 00:00. Each patient now yields a proper timeout       
 V4.2 added bed utilisation         
 V4.3 final results are now calculated by a function within ASU class. there is now a separate function for a single model run that returns a df with results       
-V4.4 multiple run function, seed sets generation for reproducible runs        
+V4.4 multiple run function, seed sets generation for reproducible runs    
+V4.5 added more parameters to the summary frame      
 
 ## TO DO:
 
