@@ -36,16 +36,17 @@ conda activate deploy_st
 
 ### See the interactive simulation model
 1) Open a terminal or ssh into your Linux server 
+2) Move working directory to file `streamlit` 
 ```
 # Obtain the link to the simulation by running the following command
 streamlit run asu_sim_streamlit.py
 ```
 
-2) Open another terminal and enter the command below
+3) Open another terminal and enter the command below
 ```
 ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_link] ubuntu@XX.XXX.X.XXX
 ```
-3) Copy the simulation link into your local browser to view
+4) Copy the simulation link into your local browser to view
 
 ## Assessment Requirement
 
