@@ -48,7 +48,13 @@ ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_l
 ```
 4) Copy the simulation link into your local browser to view
 
-## Assessment Requirement
+## Assessment Simulation Parameter
+
+### Part 1
+
+(TBC)
+
+### Part 2
 
 (TBC)
 
