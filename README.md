@@ -20,6 +20,7 @@ V4.4 multiple run function, seed sets generation for reproducible runs
 4) Bring the code to PEP8 standarts, check if it can be simplified.
 
 5) Produce an exceptional lab report no less than 900 words (<1000), use ChatGPT to help.
+      
       Lab report link: https://docs.google.com/document/d/1u7SbKhrViICDEj4Ie1E0ig8s308FIrtA9Nh5W-4v-yQ/edit?usp=sharing
 
 ## Environment:
