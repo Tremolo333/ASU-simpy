@@ -17,7 +17,9 @@ V4.2 added bed utilisation
                                                                                                                                          
 3) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (he percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
 
-4) Produce an exceptional lab report no less than 900 words (<1000), use ChatGPT to help.
+4) Bring the code to PEP8 standarts, check if it can be simplified.
+
+5) Produce an exceptional lab report no less than 900 words (<1000), use ChatGPT to help.
 
 ## Environment:
 
