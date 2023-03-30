@@ -16,7 +16,7 @@ V4.5 added more parameters to the summary frame
                                                                                                                                          
       Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial
                                                                                                                                          
-3) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (the percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
+3) () Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (the percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
 
 4) (Toghether) Bring the code to PEP8 standarts, check if it can be simplified.
 
