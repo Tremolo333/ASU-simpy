@@ -62,27 +62,6 @@ if REPRODUCIBLE_RUN:
 else:
     SEEDS = [None, None, None, None, None, None, None, None]
 
-    
-##############################################
-# list of metrics useful for external apps
-RESULT_FIELDS = ['00a_total_arrivals',
-                 '00b_stroke_arrivals',
-                 '00c_TIA_arrivals',
-                 '00d_Neuro_arrivals',
-                 '04a_treatment_wait',
-                 '04b_treatment_util',
-                 '05_total_time']
-
-# list of metrics useful for external apps
-RESULT_LABELS = {'00_arrivals': 'Total Patient Arrivals',
-                 '00b_stroke_arrivals': 'Stroke Patient Arrivals',
-                 '00c_TIA_arrivals': 'TIA Patient Arrivals',
-                 '00d_Neuro_arrivals': 'Neuro Patient Arrivals',
-                 '04a_treatment_wait': 'Mean Treatment Waiting Time (mins)',
-                 '04b_treatment_util': 'Bed Utilisation',
-                 '05_total_time': 'Mean Total time in Unit per patient'}    
-##############################################
-
 
 # Scenario class
 class Scenario:
@@ -275,6 +254,9 @@ class ASU:
         self.init_model_resources(args)
         self.patients = []
         self.patient_count = 0
+        self.type1_count = 0
+        self.type2_count = 0
+        self.type3_count = 0
         
         
     def init_model_resources(self, args):
@@ -287,8 +269,8 @@ class ASU:
             Simulation Parameter Container
         '''
 
-        args.beds = simpy.Resource(self.env, 
-                                   capacity=args.beds)
+        self.args.beds = simpy.Resource(self.env, 
+                                   capacity=9999999)
         
         
     def run(self, results_collection_period = RUN_LENGTH,
@@ -333,6 +315,7 @@ class ASU:
                 yield self.env.timeout(inter_arrival_time)
                 
                 self.patient_count += 1
+                self.type1_count += 1
                 
                 trace(f'Patient № {self.patient_count} (Stroke) arrives at: {self.env.now:.3f}')
                 
@@ -356,7 +339,8 @@ class ASU:
            
                 yield self.env.timeout(inter_arrival_time)
             
-                self.patient_count += 1            
+                self.patient_count += 1
+                self.type2_count += 1
                                 
                 trace(f'Patient № {self.patient_count} (TIA) arrives at: {self.env.now:.3f}')   
                 
@@ -380,6 +364,7 @@ class ASU:
                 yield self.env.timeout(inter_arrival_time)
                 
                 self.patient_count += 1
+                self.type3_count += 1
                 
                 trace(f'Patient № {self.patient_count} (Neuro) arrives at: {self.env.now:.3f}')
                 
@@ -429,13 +414,14 @@ class ASU:
                      for patient in self.patients]).sum() / self.patient_count
         
 
-        df = pd.DataFrame({'1':{'stroke patients count':self.type1_count,
-                                'mean_queue_bottom90%': queue_bottom90, 
-                                'bed utilisation': util,
-                                'total patients count':self.patient_count,
-                                'neuro patients count':self.type3_count,
-                                'TIA patients count':self.type2_count,
-                                'average treatment time':average_treat_time}})
+        df = pd.DataFrame({'1':{'1b Stroke Patient Arrivals':self.type1_count,
+                                '2 Bottom 90% Mean Treatment Waiting Time (hrs)': queue_bottom90, 
+                                '3 Bed Utilisation (%)': util*100,
+                                '1a Total Patient Arrivals':self.patient_count,
+                                '1d Neuro Patient Arrivals':self.type3_count,
+                                '1c TIA Patient Arrivals':self.type2_count,
+                                '4 Mean Total Time in Unit per patient(hrs)':average_treat_time}})
+        
         df = df.T
         df.index.name = 'rep'
         return df
