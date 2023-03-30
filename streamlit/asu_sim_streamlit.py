@@ -1,5 +1,4 @@
 from resources.sim import Scenario, multiple_replications
-from treat_sim.distributions import Exponential, Lognormal
 import streamlit as st
 import glob
 import os
@@ -38,13 +37,13 @@ with st.sidebar:
 
     #Interarrival time
     stroke_iat = st.slider('Interarrival time for stroke patient', 
-                           1.0, 20.0, 1.2, 0.1,
+                           1.0, 5.0, 1.2, 0.01,
                           help = 'Patients who have suffered an acute stroke')
     tia_iat = st.slider('Interarrival time for TIA patient',
-                        1.0, 20.0, 9.5, 0.1,
+                        1.0, 15.0, 9.5, 0.01,
                        help = 'Patients who have suffered a transient ischaemic attack (TIA)')
     neuro_iat = st.slider('Interarrival time for neuro patient', 
-                          1.0, 20.0, 3.5, 0.1,
+                          1.0, 10.0, 3.5, 0.01,
                          help = 'Patients who have complex neurological conditions')
     
     # Treatment time mean
@@ -70,26 +69,27 @@ with st.sidebar:
                                help = 'Patients who have complex neurological conditions')
     
     # runs
-    replications = st.slider('No. replications', 1, 50, 10,
+    replications = st.slider('No. replications', 1, 30, 5,
                             help = 'Max 50 rep is supported')
 
 # Setup scenario using supplied variables
 args = Scenario()
 args.beds = n_beds
 
-args.arrival_dist_type1 = Exponential(stroke_iat, random_seed=args.seeds[0])
-args.arrival_dist_type2 = Exponential(tia_iat, random_seed=args.seeds[1])
-args.arrival_dist_type3 = Exponential(neuro_iat, random_seed=args.seeds[2])
+args.iat_type1 = stroke_iat
+args.iat_type2 = tia_iat
+args.iat_type3 = neuro_iat
 
-args.treatment_dist_type1 = Lognormal(stroke_treat_mean, stroke_treat_std, 
-                                      random_seed=args.seeds[3])
-args.treatment_dist_type2 = Lognormal(tia_treat_mean, tia_treat_std, 
-                                      random_seed=args.seeds[4])
-args.treatment_dist_type3 = Lognormal(neuro_treat_mean, neuro_treat_std, 
-                                      random_seed=args.seeds[5])
+args.treat_mean_type1 = stroke_treat_mean
+args.treat_mean_type2 = tia_treat_mean
+args.treat_mean_type3 = neuro_treat_mean
+
+args.treat_std_type1 = stroke_treat_std
+args.treat_std_type2 = tia_treat_std
+args.treat_std_type3 = neuro_treat_std
 
 if st.button('Simulate ASU'):
-
+    results = 0
     # in this example run a single replication of the model.
     with st.spinner('Simulating the ASU...'):
         results = multiple_replications(args, n_reps=replications)
