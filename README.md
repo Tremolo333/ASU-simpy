@@ -74,6 +74,23 @@ For the secondary (desirable) research questions, the interarrival time for each
 | Transient Ischaemic Attack (TIA) | 8.55            |
 | Complex Neurological             | 3.15            |
 
+The percentage of patients admitted to the stokeunit within 4 hours of arrival decreased while the bed utility increased.
+
+13 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and  maintain a bed utilisation in excess of 70%.
+
+## Results table
+
+|                                                     | 9 beds (present) | 11 beds (present) | 9 beds (2030) | 13 beds (2030) |
+|-----------------------------------------------------|------------------|-------------------|---------------|----------------|
+|Total Patient Arrivals	                              | 454.20           | 454.20            | 501.20        | 501.20         |
+|Stroke Patient Arrivals	                        | 315.60           | 315.60            | 347.80        | 347.80         |
+|TIA Patient Arrivals	                              | 36.00            | 36.00             | 41.40         | 41.40          |
+|Neuro Patient Arrivals	                              | 102.60           | 102.60            | 112.00        | 112.00         |
+|Bottom 90% Mean Treatment Waiting Time (hrs)	      | 8.57             | 0.34              | 27.35         | 0.22           |
+|Patients Admitted to Unit within 4 hrs of arrival(%) | 72.01            | 91.24             | 54.63         | 94.15          |
+|Bed Utilisation (%)	                              | 76.29            | 77.07             | 83.52         | 85.03          |
+|Mean Total Time in Unit per patient(hrs)	            | 5.52             | 5.57              | 5.47          | 5.57           |
+
 
 ## Reference
 ```
