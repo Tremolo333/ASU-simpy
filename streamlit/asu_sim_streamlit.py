@@ -1,4 +1,5 @@
 from resources.sim import Scenario, multiple_replications
+from treat_sim.distributions import Exponential, Lognormal
 import streamlit as st
 import glob
 import os
@@ -33,24 +34,40 @@ with st.sidebar:
     # set the variables for the run.
     # these are just a subset of the total available for this example...
     # in streamlit we are going to set these using sliders.
-    triage_bays = st.slider('Triage bays', 1, 5, 1)
-    exam_rooms = st.slider('Exam rooms', 1, 5, 3)
-    treat_rooms = st.slider('Non-Trauma Treatment cubicles', 1, 5, 1, 
-                            help='Set the number of non trauma pathway treatment cubicles')
+    n_beds = st.slider('Number of beds', 1, 30, 9, 1)
 
-    # examination mean
-    exam_mean = st.slider('Mean examination time', 10.0, 45.0, 
-                        16.0, 1.0)
-
+    #Interarrival time
+    stroke_iat = st.slider('Number of beds', 1.0, 20.0, 1.2, 0.1)
+    tia_iat = st.slider('Number of beds', 1.0, 20.0, 9.5, 0.1)
+    neuro_iat = st.slider('Number of beds', 1.0, 20.0, 3.5, 0.1)
+    
+    # Treatment time mean
+    stroke_treat_mean = st.slider('Number of beds', 1.0, 20.0, 7.4, 0.1)
+    tia_treat_mean = st.slider('Number of beds', 1.0, 20.0, 1.8, 0.1)
+    neuro_treat_mean = st.slider('Number of beds', 1.0, 20.0, 2.0, 0.1)
+    
+    # Treatment time std
+    stroke_treat_std = st.slider('Number of beds', 1.0, 20.0, 8.5, 0.1)
+    tia_treat_std = st.slider('Number of beds', 1.0, 20.0, 2.3, 0.1)
+    neuro_treat_std = st.slider('Number of beds', 1.0, 20.0, 2.5, 0.1)
+    
     # runs
     replications = st.slider('No. replications', 1, 50, 10)
 
 # Setup scenario using supplied variables
 args = Scenario()
-args.n_triage = triage_bays
-args.n_exam = exam_rooms
-args.n_cubicles_1 = treat_rooms
-args.exam_mean = exam_mean
+args.beds = n_beds
+
+args.arrival_dist_type1 = Exponential(stroke_iat, random_seed=args.seeds[0])
+args.arrival_dist_type2 = Exponential(tia_iat, random_seed=args.seeds[1])
+args.arrival_dist_type3 = Exponential(neuro_iat, random_seed=args.seeds[2])
+
+args.treatment_dist_type1 = Lognormal(stroke_treat_mean, stroke_treat_std, 
+                                      random_seed=args.seeds[3])
+args.treatment_dist_type2 = Lognormal(tia_treat_mean, tia_treat_std, 
+                                      random_seed=args.seeds[4])
+args.treatment_dist_type3 = Lognormal(neuro_treat_mean, neuro_treat_std, 
+                                      random_seed=args.seeds[5])
 
 if st.button('Simulate ASU'):
 
