@@ -16,7 +16,7 @@ V4.5 added more parameters to the summary frame
                                                                                                                                          
       Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial
                                                                                                                                          
-3) () Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (the percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
+3) (Toghether) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (the percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
 
 4) (Toghether) Bring the code to PEP8 standarts, check if it can be simplified.
 
@@ -62,7 +62,7 @@ The period of interest for each simulation run is 1 year
 
 The default interarrival time and length of stay are suitable for primary (essential) research questions
 
-11 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and  maintain a bed utilisation in excess of 70%.
+11 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and maintain a bed utilisation in excess of 70%.
 
 ### Secondary (desirable) research questions
 
@@ -74,9 +74,9 @@ For the secondary (desirable) research questions, the interarrival time for each
 | Transient Ischaemic Attack (TIA) | 8.55            |
 | Complex Neurological             | 3.15            |
 
-The percentage of patients admitted to the stokeunit within 4 hours of arrival decreased while the bed utility increased.
+The percentage of patients admitted to the stoke unit within 4 hours of arrival decreased while the bed utility increased.
 
-13 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and  maintain a bed utilisation in excess of 70%.
+13 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and maintain a bed utilisation in excess of 70%.
 
 ## Results table
 
