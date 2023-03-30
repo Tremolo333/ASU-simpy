@@ -54,17 +54,25 @@ ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_l
 ```
 4) Copy the simulation link into your local browser to view
 
-## Assessment Simulation Parameter
+## Assessment Simulation
+
+The period of interest for each simulation run is 1 year
+
+### Primary (essential) research questions
 
 The default interarrival time and length of stay are suitable for primary (essential) research questions
+
+11 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and  maintain a bed utilisation in excess of 70%.
+
+### Secondary (desirable) research questions
 
 For the secondary (desirable) research questions, the interarrival time for each type of patients are 10% shortened to simulate 10% increase in patients requiring an admission. Please change the time as follows:
 
 | Patient Type                     | Mean IAT (days) |
 |----------------------------------|-----------------|
-| Acute strokes                    | 1.32            |
-| Transient Ischaemic Attack (TIA) | 10.45           |
-| Complex Neurological             | 3.85            |
+| Acute strokes                    | 1.08            |
+| Transient Ischaemic Attack (TIA) | 8.55            |
+| Complex Neurological             | 3.15            |
 
 
 ## Reference
