@@ -11,6 +11,7 @@ dependencies:
   - simpy=4.0.1
   - jupyter
   - jupyterlab=3.6.2
+  - joblib=1.2.0
   - pip:
     - streamlit
     - treat-sim==0.1.0
