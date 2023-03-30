@@ -12,15 +12,15 @@ V4.5 added more parameters to the summary frame
 
 1) (Timur) Implement high quality output analysis techniques (WS6). Take into account the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients, adjust the run length.
 
-2) Wrap the model into the streamlit, add various sliders, run button, whatever else (make it look neat and professional)      
+2) (Inni) Wrap the model into the streamlit, add various sliders, run button, whatever else (make it look neat and professional)      
                                                                                                                                          
-      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial    <<woking on this(inni)
+      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial
                                                                                                                                          
-3) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (he percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
+3) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (the percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
 
-4) Bring the code to PEP8 standarts, check if it can be simplified.
+4) (Toghether) Bring the code to PEP8 standarts, check if it can be simplified.
 
-5) Produce an exceptional lab report no less than 900 words (<1000)
+5) (Toghether) Produce an exceptional lab report no less than 900 words (<1000)
       
       Lab report link: https://docs.google.com/document/d/1u7SbKhrViICDEj4Ie1E0ig8s308FIrtA9Nh5W-4v-yQ/edit?usp=sharing
 
@@ -56,13 +56,16 @@ ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_l
 
 ## Assessment Simulation Parameter
 
-### Part 1
+The default interarrival time and length of stay are suitable for primary (essential) research questions
 
-(TBC)
+For the secondary (desirable) research questions, the interarrival time for each type of patients are 10% shortened to simulate 10% increase in patients requiring an admission. Please change the time as follows:
 
-### Part 2
+| Patient Type                     | Mean IAT (days) |
+|----------------------------------|-----------------|
+| Acute strokes                    | 1.32            |
+| Transient Ischaemic Attack (TIA) | 10.45           |
+| Complex Neurological             | 3.85            |
 
-(TBC)
 
 ## Reference
 ```
