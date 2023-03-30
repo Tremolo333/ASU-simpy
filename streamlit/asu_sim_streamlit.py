@@ -37,22 +37,41 @@ with st.sidebar:
     n_beds = st.slider('Number of beds', 1, 30, 9, 1)
 
     #Interarrival time
-    stroke_iat = st.slider('Number of beds', 1.0, 20.0, 1.2, 0.1)
-    tia_iat = st.slider('Number of beds', 1.0, 20.0, 9.5, 0.1)
-    neuro_iat = st.slider('Number of beds', 1.0, 20.0, 3.5, 0.1)
+    stroke_iat = st.slider('Interarrival time for stroke patient', 
+                           1.0, 20.0, 1.2, 0.1,
+                          help = 'Patients who have suffered an acute stroke')
+    tia_iat = st.slider('Interarrival time for TIA patient',
+                        1.0, 20.0, 9.5, 0.1,
+                       help = 'Patients who have suffered a transient ischaemic attack (TIA)')
+    neuro_iat = st.slider('Interarrival time for neuro patient', 
+                          1.0, 20.0, 3.5, 0.1,
+                         help = 'Patients who have complex neurological conditions')
     
     # Treatment time mean
-    stroke_treat_mean = st.slider('Number of beds', 1.0, 20.0, 7.4, 0.1)
-    tia_treat_mean = st.slider('Number of beds', 1.0, 20.0, 1.8, 0.1)
-    neuro_treat_mean = st.slider('Number of beds', 1.0, 20.0, 2.0, 0.1)
+    stroke_treat_mean = st.slider('Mean length of stay for stroke patient', 
+                                  1.0, 20.0, 7.4, 0.1,
+                                 help = 'Patients who have suffered an acute stroke')
+    tia_treat_mean = st.slider('Mean length of stay for patient for TIA patient',
+                               1.0, 20.0, 1.8, 0.1,
+                              help = 'Patients who have suffered a transient ischaemic attack (TIA)')
+    neuro_treat_mean = st.slider('Mean length of stay for patient for neuro patient', 
+                                 1.0, 20.0, 2.0, 0.1,
+                                help = 'Patients who have complex neurological conditions')
     
     # Treatment time std
-    stroke_treat_std = st.slider('Number of beds', 1.0, 20.0, 8.5, 0.1)
-    tia_treat_std = st.slider('Number of beds', 1.0, 20.0, 2.3, 0.1)
-    neuro_treat_std = st.slider('Number of beds', 1.0, 20.0, 2.5, 0.1)
+    stroke_treat_std = st.slider('SD of length of stay for stroke patient', 
+                                 1.0, 20.0, 8.5, 0.1,
+                                help = 'Patients who have suffered an acute stroke')
+    tia_treat_std = st.slider('SD of length of stay for patient for TIA patient', 
+                              1.0, 20.0, 2.3, 0.1,
+                             help = 'Patients who have suffered a transient ischaemic attack (TIA)')
+    neuro_treat_std = st.slider('SD of length of stay for patient for neuro patient', 
+                                1.0, 20.0, 2.5, 0.1,
+                               help = 'Patients who have complex neurological conditions')
     
     # runs
-    replications = st.slider('No. replications', 1, 50, 10)
+    replications = st.slider('No. replications', 1, 50, 10,
+                            help = 'Max 50 rep is supported')
 
 # Setup scenario using supplied variables
 args = Scenario()
