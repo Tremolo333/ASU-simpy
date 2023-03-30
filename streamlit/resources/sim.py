@@ -81,6 +81,19 @@ class Scenario:
         
         # warm-up
         self.warm_up = 0.0
+        
+        
+        self.iat_type1 = MEAN_IATs[0]
+        self.iat_type2 = MEAN_IATs[1]
+        self.iat_type3 = MEAN_IATs[2]
+        
+        self.treat_mean_type1 = TREAT_MEANs[0]
+        self.treat_mean_type2 = TREAT_MEANs[1]
+        self.treat_mean_type3 = TREAT_MEANs[2]
+        
+        self.treat_std_type1 = TREAT_STDs[0]
+        self.treat_std_type2 = TREAT_STDs[1]
+        self.treat_std_type3 = TREAT_STDs[2]
 
         # sampling
         self.random_number_set = random_number_set
@@ -115,17 +128,17 @@ class Scenario:
 
 
         # inter-arrival distributions
-        self.arrival_dist_type1 = Exponential(MEAN_IATs[0], random_seed=self.seeds[0])
-        self.arrival_dist_type2 = Exponential(MEAN_IATs[1], random_seed=self.seeds[1])
-        self.arrival_dist_type3 = Exponential(MEAN_IATs[2], random_seed=self.seeds[2])
+        self.arrival_dist_type1 = Exponential(self.iat_type1, random_seed=self.seeds[0])
+        self.arrival_dist_type2 = Exponential(self.iat_type2, random_seed=self.seeds[1])
+        self.arrival_dist_type3 = Exponential(self.iat_type3, random_seed=self.seeds[2])
         
         
-        # treatment distributions
-        self.treatment_dist_type1 = Lognormal(TREAT_MEANs[0], TREAT_STDs[0], 
+        # treatment distributions        
+        self.treatment_dist_type1 = Lognormal(self.treat_mean_type1, self.treat_std_type1, 
                                               random_seed=self.seeds[3])
-        self.treatment_dist_type2 = Lognormal(TREAT_MEANs[1], TREAT_STDs[1], 
+        self.treatment_dist_type2 = Lognormal(self.treat_mean_type2, self.treat_std_type2, 
                                               random_seed=self.seeds[4])
-        self.treatment_dist_type3 = Lognormal(TREAT_MEANs[2], TREAT_STDs[2], 
+        self.treatment_dist_type3 = Lognormal(self.treat_mean_type3, self.treat_std_type1, 
                                               random_seed=self.seeds[5])
 # Model building        
 class Patient:
@@ -270,7 +283,7 @@ class ASU:
         '''
 
         self.args.beds = simpy.Resource(self.env, 
-                                   capacity=9999999)
+                                   capacity=args.beds)
         
         
     def run(self, results_collection_period = RUN_LENGTH,
@@ -305,32 +318,32 @@ class ASU:
         
             
     def arrivals_generator_type1(self):
-            
+        self.args.init_sampling()    
         while True:
             
-            
+                            
                 # PATIENT WITH ACUTE STROKE ARRIVES (TYPE 1)
-                inter_arrival_time = self.args.arrival_dist_type1.sample()               
-                
+                inter_arrival_time = self.args.arrival_dist_type1.sample()
+           
                 yield self.env.timeout(inter_arrival_time)
-                
+            
                 self.patient_count += 1
                 self.type1_count += 1
-                
-                trace(f'Patient № {self.patient_count} (Stroke) arrives at: {self.env.now:.3f}')
+                                
+                trace(f'Patient № {self.patient_count} (TIA) arrives at: {self.env.now:.3f}')   
                 
                 # create a new patient and pass in env and args
-                new_patient = Patient(self.patient_count, self.env, self.args)                
-
-                # init the minor injury process for this patient
-                self.env.process(new_patient.treatment_type1())                 
+                new_patient = Patient(self.patient_count, self.env, self.args)
             
+                # init the minor injury process for this patient
+                self.env.process(new_patient.treatment_type1())                
+                
                 # keep a record of the patient for results calculation
-                self.patients.append(new_patient)                
+                self.patients.append(new_patient)                   
                 
                 
     def arrivals_generator_type2(self):
-            
+        self.args.init_sampling()    
         while True:
             
                             
@@ -354,7 +367,7 @@ class ASU:
                 self.patients.append(new_patient)                
                 
     def arrivals_generator_type3(self):
-            
+        self.args.init_sampling()    
         while True:
             
                 
@@ -404,7 +417,9 @@ class ASU:
 
         # drop top 10%, estimate the mean
         queue_bottom90 = sorted_queue_times[num_to_drop:].mean()
-    
+        
+        # calculate proportion of patient with queue time less than 4 hrs
+        percent_4_less = (sum(patients_queue_times <= 4)/arr_length)*100
     
         #bed utilisation = sum(call durations) / (run length X no. BEDS)
         util = np.array([patient.treat_time 
@@ -416,11 +431,13 @@ class ASU:
 
         df = pd.DataFrame({'1':{'1b Stroke Patient Arrivals':self.type1_count,
                                 '2 Bottom 90% Mean Treatment Waiting Time (hrs)': queue_bottom90, 
-                                '3 Bed Utilisation (%)': util*100,
+                                '4 Bed Utilisation (%)': util*100,
                                 '1a Total Patient Arrivals':self.patient_count,
                                 '1d Neuro Patient Arrivals':self.type3_count,
                                 '1c TIA Patient Arrivals':self.type2_count,
-                                '4 Mean Total Time in Unit per patient(hrs)':average_treat_time}})
+                                '5 Mean Total Time in Unit per patient(hrs)':average_treat_time,
+                                '3 Patients Admitted to Unit within 4 hrs of arrival(%)': percent_4_less}})
+        
         
         df = df.T
         df.index.name = 'rep'
