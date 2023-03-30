@@ -74,7 +74,7 @@ For the secondary (desirable) research questions, the interarrival time for each
 | Transient Ischaemic Attack (TIA) | 8.55            |
 | Complex Neurological             | 3.15            |
 
-The percentage of patients admitted to the stoke unit within 4 hours of arrival decreased while the bed utility increased.
+The percentage of patients admitted to the stroke unit within 4 hours of arrival is decreased while the bed utility increased.
 
 13 beds are needed for 90% of patients being admitted to the stroke unit within 4 hours of their arrival at the hospital and maintain a bed utilisation in excess of 70%.
 
