@@ -8,18 +8,17 @@ V4.3 final results are now calculated by a function within ASU class. there is n
 V4.4 multiple run function, seed sets generation for reproducible runs    
 V4.5 added more parameters to the summary frame     
 V5.0 simplified the code significantly by storing samples from iat and treatment distributions in 2 separate dictionaries, rather than a separate value for every patient type. type1/type2/type3 replaced with 'stroke'/'tia'/'neuro throughout. there is now single arrival generator function and single treatment function. arrival generator now takes patient type as a parameter that defines future pathway. simplified the summary frame function              
+V5.1 there are now separate functions to get samples outside of treatment() and arrivals_generator()
 
-V5.1 there are now separate functions to get samples outside of treatment() and arrivals_generator()          
+implemented controllable/uncontrollable sampling, updated streamlit file and source code
 
 ## TO DO:
 
 1) Calculate model warm-up period and take it into account - the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients.       
 
-2) Add controllable/uncontrollable sampling.
-
-3) Bring the code to PEP8 standarts, check if it can be simplified.
+2) Bring the code to PEP8 standarts, check if it can be simplified.
 
 
       
-      Lab report link: https://docs.google.com/document/d/1u7SbKhrViICDEj4Ie1E0ig8s308FIrtA9Nh5W-4v-yQ/edit?usp=sharing
-      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial
+      Lab report link: https://docs.google.com/document/d/1u7SbKhrViICDEj4Ie1E0ig8s308FIrtA9Nh5W-4v-yQ/edit?usp=sharing         
+      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial        
