@@ -11,6 +11,7 @@ V5.0 simplified the code significantly by storing samples from iat and treatment
 V5.1 there are now separate functions to get samples outside of treatment() and arrivals_generator()
 
 implemented controllable/uncontrollable sampling, updated streamlit file and source code
+error fixed with bed utilisation calculation as the formula was incorrect, n_beds wasn't referred to properly within a class
 
 ## TO DO:
 
