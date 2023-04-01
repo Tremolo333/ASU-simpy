@@ -18,7 +18,7 @@ error fixed with bed utilisation calculation as the formula was incorrect, n_bed
 from the workshop №6, in a separate file perform the following and modify the source code        
 1) Calculate model warm-up period and take it into account - the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients.     
 
-2) Select the number of replications to run.
+2) Select the number of replications to run to obtain reliable results.        
 
 3) Present the results.          
 
