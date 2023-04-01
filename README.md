@@ -1,5 +1,7 @@
 # ASU-simpy
 The depo contains random code for the final hpdm097 assignment
+
+Changelog:         
       
 V4.0 contains a basic working ASU model as specified in assignment      
 V4.1 added utility function to calculate final results, fixed the problem with the first three patients starting their treatment at 00:00. Each patient now yields a proper timeout       
