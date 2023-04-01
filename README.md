@@ -13,16 +13,13 @@ V5.1 there are now separate functions to get samples outside of treatment() and 
 
 ## TO DO:
 
-1) (Timur) Implement high quality output analysis techniques (WS6). Take into account the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients, adjust the run length.
+1) Calculate model warm-up period and take it into account - the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients.       
 
-2) (Inni) Wrap the model into the streamlit, add various sliders, run button, whatever else (make it look neat and professional)      
-                                                                                                                                         
-      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial
-                                                                                                                                         
-3) (Toghether) Run the model with all means of IAT distributions decreased by 10%, monitor the stroke patients to answer the secondary question (the percentage of patients admitted to the stoke unit within 4 hours of arrival, bed occupancy and if more bed capacity is needed. )
+2) Add controllable/uncontrollable sampling.
 
-4) (Toghether) Bring the code to PEP8 standarts, check if it can be simplified.
+3) Bring the code to PEP8 standarts, check if it can be simplified.
 
-5) (Toghether) Produce an exceptional lab report no less than 900 words (<1000)
+
       
       Lab report link: https://docs.google.com/document/d/1u7SbKhrViICDEj4Ie1E0ig8s308FIrtA9Nh5W-4v-yQ/edit?usp=sharing
+      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial
