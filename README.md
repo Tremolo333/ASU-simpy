@@ -16,6 +16,8 @@ V5.2 implemented controllable/uncontrollable sampling, updated streamlit file an
 
 ## TO DO:
 
+0) Recalculate pts admitted within 4 hours           
+
 from the workshop №6, in a separate file perform the following and modify the source code        
 1) Calculate model warm-up period and take it into account - the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients.     
 
