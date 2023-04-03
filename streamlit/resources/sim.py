@@ -121,7 +121,7 @@ RUN_LENGTH = 365
 DEFAULT_WARMUP_AUDIT_INTERVAL = 1
 
 # default № of reps for multiple reps run
-DEFAULT_N_REPS = 5
+DEFAULT_N_REPS = 51
 
 # default random number SET
 DEFAULT_RNG_SET = None
@@ -608,12 +608,12 @@ def single_run(scenario,
     results_summary= model.run_summary_frame()
     
     return results_summary
+
 def multiple_replications(scenario, 
                           rc_period=RUN_LENGTH,
                           warm_up=0,
                           n_reps=DEFAULT_N_REPS, 
-                          n_jobs=-1,
-                          random_no_set = DEFAULT_RNG_SET):
+                          n_jobs=-1):
     '''
     Perform multiple replications of the model.
     
@@ -636,16 +636,13 @@ def multiple_replications(scenario,
     n_jobs, int, optional (default=-1)
         No. replications to run in parallel.
         
-    random_no_set: int or None, optional (default=1)
-        Controls the set of random seeds used by the stochastic parts of the 
-        model.  Set to different ints to get different results.  Set to None
-        for a random set of seeds.
         
     Returns:
     --------
     List
     '''    
     
+    random_no_set = scenario.random_number_set
     
     if random_no_set is not None:
         rng_sets = [random_no_set + rep for rep in range(n_reps)]
