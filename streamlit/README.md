@@ -1,7 +1,3 @@
-# ASU-simpy
-This file contains code for the simulation model for hpdm097 assignment 2
-
-
 
 ## Environment:
 
