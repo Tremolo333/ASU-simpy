@@ -88,7 +88,7 @@ args = Scenario()
 if reproducible_run:
     args.random_number_set = rng_set
 
-args.beds = n_beds
+args.n_beds = n_beds
 
 args.iat_means = [stroke_iat, tia_iat, neuro_iat] 
 args.treat_means = [stroke_treat_mean, tia_treat_mean, neuro_treat_mean]
@@ -102,4 +102,3 @@ if st.button('Simulate ASU'):
     st.success('Done!')
 
     st.table(results.mean().round(2))
-
