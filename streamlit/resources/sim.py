@@ -1,3 +1,4 @@
+#simulation model
 
 import numpy as np
 import pandas as pd
@@ -6,6 +7,8 @@ import math
 import matplotlib.pyplot as plt
 import simpy
 from joblib import Parallel, delayed
+import warnings
+from scipy.stats import t
 #from treat_sim.distributions import Exponential, Lognormal
 
 
@@ -114,6 +117,9 @@ def trace(msg):
 # run length in days
 RUN_LENGTH = 365
 
+# audit interval in days
+DEFAULT_WARMUP_AUDIT_INTERVAL = 1
+
 # default № of reps for multiple reps run
 DEFAULT_N_REPS = 5
 
@@ -125,7 +131,7 @@ N_STREAMS = 10
 TRACE = False
 
 # resource counts
-N_BEDS = 10
+N_BEDS = 9
 
 # time between arrivals in minutes (exponential)
 # for acute stroke, TIA and neuro respectively
@@ -137,85 +143,83 @@ TREAT_MEANs = [7.4, 1.8, 2.0]
 TREAT_STDs = [8.5, 2.3, 2.5]
 
 
-# Scenario class
-
+#Scenario class
 class Scenario:
     '''
-    Parameter container class for minor injury unit model.
+    Parameter container class for ASU model.
     '''
+
     def __init__(self, random_number_set=DEFAULT_RNG_SET):
         '''
-        The init method sets up our defaults. 
-        
-        Params:
-        -------
-        
-        name - str or None
-            optional name for scenario
+        Initialize the Scenario object with default values.
+
+        Parameters:
+        ----------
+        random_number_set: int, optional
+            The random number set to be used by the simulation.
         '''
-        
-        # warm-up
+
+        # Warm-up period
         self.warm_up = 0.0
-        
-        # either hard-coded or obtained from streamlit
+
+        # Default values for inter-arrival and treatment times
         self.iat_means = MEAN_IATs
         self.treat_means = TREAT_MEANs
         self.treat_stds = TREAT_STDs
 
-        # sampling
+        # Sampling
         self.random_number_set = random_number_set
         self.init_sampling()
-        
-        # number of beds
-        self.beds = N_BEDS
-        
-        
+
+        # Number of beds
+        self.n_beds = N_BEDS
+
     def set_random_no_set(self, random_number_set):
         '''
-        Controls the random sampling 
+        Set the random number set to be used by the simulation.
 
         Parameters:
         ----------
         random_number_set: int
-            Used to control the set of psuedo random numbers
-            used by the distributions in the simulation.
+            The random number set to be used by the simulation.
         '''
         self.random_number_set = random_number_set
         self.init_sampling()
-        
-        
+
     def init_sampling(self):
         '''
-        Create the distributions used by the model and initialise 
-        the random seeds of each.
+        Initialize the random number streams and create the distributions used by the simulation.
         '''
-        # create random number streams
+
+        # Create random number streams
         rng_streams = np.random.default_rng(self.random_number_set)
+
+        # Initialize the random seeds for each stream
         self.seeds = rng_streams.integers(0, 999999999, size=N_STREAMS)
-        
-        
-        # inter-arrival distributions samples
+
+        # Create inter-arrival time distributions for each patient type
         self.arrival_dist_samples = {
             'stroke': Exponential(self.iat_means[0], random_seed=self.seeds[0]),
             'tia': Exponential(self.iat_means[1], random_seed=self.seeds[1]),
             'neuro': Exponential(self.iat_means[2], random_seed=self.seeds[2])
         }
-        
-        # treatment distributions samples
+
+        # Create treatment time distributions for each patient type
         self.treatment_dist_samples = {
-            'stroke': Lognormal(self.treat_means[0], self.treat_stds[0], random_seed=self.seeds[3]),
-            'tia': Lognormal(self.treat_means[1], self.treat_stds[1], random_seed=self.seeds[4]),
-            'neuro': Lognormal(self.treat_means[2], self.treat_stds[2], random_seed=self.seeds[5])
+            'stroke': Lognormal(self.treat_means[0], self.treat_stds[0], 
+                                random_seed=self.seeds[3]),
+            'tia': Lognormal(self.treat_means[1], self.treat_stds[1], 
+                             random_seed=self.seeds[4]),
+            'neuro': Lognormal(self.treat_means[2], self.treat_stds[2], 
+                               random_seed=self.seeds[5])
         }
-            
+
         
-
-
 # Model building
 
 class Patient:
     '''
-    Patient in the minor ED process
+    Patient in the ASU processes
     '''
     def __init__(self, identifier, patient_type, env, args):
         '''
@@ -236,33 +240,27 @@ class Patient:
         self.identifier = identifier
         self.env = env
         
-        self.patient_type = patient_type
-
         # treatment parameters
+        self.patient_type = patient_type
         self.beds = args.beds
         self.treatment_dist_samples = args.treatment_dist_samples
                 
         # individual patient metrics
         self.queue_time = 0.0
         self.treat_time = 0.0
-        
+    
     def get_treatment_dist_sample(self):
-
-        # sample for patient pathway
-        if self.patient_type == 'stroke':
-            self.treat_time = self.treatment_dist_samples['stroke'].sample()
-        elif self.patient_type == 'tia':
-            self.treat_time = self.treatment_dist_samples['tia'].sample()
-        else:
-            self.treat_time = self.treatment_dist_samples['neuro'].sample()  
-                
-        activity_duration = self.treat_time
-            
-        return activity_duration
-        
+        '''
+        This method returns a sample from the treatment distribution of the patient, based on their type.
+        '''
+        self.treat_time = self.treatment_dist_samples[self.patient_type].sample()
+        return self.treat_time
     
     def treatment(self):
-
+        '''
+        This method represents the patient's treatment process. The patient will request a bed, wait in the queue,
+        and then undergo treatment before being discharged.
+        '''
         # record the time that patient entered the system
         arrival_time = self.env.now
      
@@ -270,16 +268,98 @@ class Patient:
         with self.beds.request() as req:
             yield req
             
-            # record time to first being seen by a doctor
+            # calculate queue time and log it
             self.queue_time = self.env.now - arrival_time
-
-            trace(f'Patient № {self.identifier} started treatment at {self.env.now:.3f};'
-                      + f' queue time was {self.queue_time:.3f}')            
-
-            # treatment delay
+            trace(f'Patient № {self.identifier} started treatment at {self.env.now:.3f};' 
+                 + f' queue time was {self.queue_time:.3f}') 
+            
+            # wait for treatment to finish
             yield self.env.timeout(self.get_treatment_dist_sample())
-
-
+            
+            # discharge the patient
+            self.patient_discharged()
+    
+    def patient_discharged(self):
+        '''
+        This method logs the patient's discharge and frees up the bed.
+        '''
+        trace(f'Patient № {self.identifier} discharged at {self.env.now:.3f}')
+class MonitoredPatient(Patient):
+    '''
+    A MonitoredPatient class which monitors a patient process and notifies its observers 
+    when a patient process has reached an event of completing treatment.
+    
+    This class implements the observer design pattern.
+    '''
+    
+    def __init__(self, admissions_count, patient_type, env, args, model):
+        '''
+        Constructor for MonitoredPatient class.
+        
+        Params:
+        -------
+        admissions_count: int
+            The identifier for the patient
+            
+        patient_type: str
+            The type of patient, either 'stroke', 'tia', or 'neuro'
+            
+        env: simpy.Environment
+            The simulation environment
+            
+        args: Scenario
+            The input data for the scenario
+            
+        model: Model
+            The model to be observed
+        '''
+        
+        # Calls the constructor for the Patient superclass
+        super().__init__(admissions_count, patient_type, env, args)
+        
+        # Creates a list of observers to notify
+        self._observers = [model]
+        
+    def register_observer(self, observer):
+        '''
+        A method to register an observer to be notified when an event occurs.
+        
+        Params:
+        -------
+        observer: Observer
+            The observer to be registered
+        '''
+        
+        # Adds the observer to the list of observers
+        self._observers.append(observer)
+    
+    def notify_observers(self, *args, **kwargs):
+        '''
+        A method to notify all registered observers when an event occurs.
+        
+        Params:
+        -------
+        *args: Any
+            Positional arguments passed to the observer method
+        
+        **kwargs: Any
+            Keyword arguments passed to the observer method
+        '''
+        
+        # Calls the process_event method on each observer with the arguments passed
+        for observer in self._observers: 
+            observer.process_event(*args, **kwargs)
+    
+    def patient_discharged(self):
+        '''
+        A method to notify all observers that the patient has been discharged.
+        '''
+        
+        # Calls the patient_discharged method on the Patient superclass
+        super().patient_discharged()
+        
+        # Notifies all observers that the patient has been discharged
+        self.notify_observers(self, 'patient_discharged')
 class ASU:  
     '''
     Model of an ASU
@@ -297,15 +377,25 @@ class ASU:
         '''
         self.env = simpy.Environment()
         self.args = args 
-        self.init_model_resources(args)
+        self.init_model_resources()
         self.patients = []
-        self.patient_count = 0
+        
+        self.admissions_count = 0
+        
         self.stroke_count = 0
         self.tia_count = 0
         self.neuro_count = 0
         
+        #running performance metrics:
+        self.bed_wait = 0.0
+        self.bed_util = 0.0
         
-    def init_model_resources(self, args):
+        self.patient_count = 0
+            
+        self.bed_occupation_time = 0.0
+        
+        
+    def init_model_resources(self):
         '''
         Setup the simpy resource objects
         
@@ -315,8 +405,8 @@ class ASU:
             Simulation Parameter Container
         '''
 
-        args.beds = simpy.Resource(self.env, 
-                                   capacity=args.beds)
+        self.args.beds = simpy.Resource(self.env, 
+                                   capacity=self.args.n_beds)
         
         
     def run(self, results_collection_period = RUN_LENGTH,
@@ -341,6 +431,7 @@ class ASU:
             None
 
         '''
+        
         # setup the arrival processes
         self.env.process(self.arrivals_generator('stroke'))
         self.env.process(self.arrivals_generator('tia'))
@@ -352,13 +443,7 @@ class ASU:
         
     def get_arrival_dist_sample(self):
         
-        if self.patient_type == 'stroke':
-            inter_arrival_time = self.args.arrival_dist_samples['stroke'].sample()
-        elif self.patient_type == 'tia':
-            inter_arrival_time = self.args.arrival_dist_samples['tia'].sample()
-        else:
-            inter_arrival_time = self.args.arrival_dist_samples['neuro'].sample()
-        
+        inter_arrival_time = self.args.arrival_dist_samples[self.patient_type].sample()
         return inter_arrival_time
             
         
@@ -367,8 +452,9 @@ class ASU:
             
         while True:
                 
-                self.patient_type = patient_type
+            self.patient_type = patient_type
             
+            if self.env.now > self.args.warm_up:
                 if self.patient_type == 'stroke':
                     self.stroke_count += 1
                 elif self.patient_type == 'tia':
@@ -376,71 +462,106 @@ class ASU:
                 else:
                     self.neuro_count += 1    
 
+            iat = self.get_arrival_dist_sample()
+            yield self.env.timeout(iat)
                 
-                yield self.env.timeout(self.get_arrival_dist_sample())
-                
-                self.patient_count += 1
+            self.admissions_count += 1
 
-                trace(f'Patient № {self.patient_count} ({patient_type}) arrives at: {self.env.now:.3f}')
+            trace(f'Patient № {self.admissions_count} ({patient_type}) arrives at {self.env.now:.3f}')
                 
-                # create a new patient and pass in env and args
-                new_patient = Patient(self.patient_count, patient_type, self.env, self.args)                
+            new_patient = MonitoredPatient(self.admissions_count, patient_type, self.env, self.args, self)                
 
-                # init the minor injury process for this patient
-                self.env.process(new_patient.treatment())                 
-            
+            self.env.process(new_patient.treatment())                 
+                
+            if self.env.now > self.args.warm_up:
+                    
                 # keep a record of the patient for results calculation
                 self.patients.append(new_patient)                
-                
+    
+    
+    def process_event(self, *args, **kwargs):
+        '''
+        Running calculates each time a Patient process ends
+        (when a patient departs the simulation model)
+        
+        Params:
+        --------
+        *args: list
+            variable number of arguments. This is useful in case you need to
+            pass different information for different events
+        
+        *kwargs: dict
+            keyword arguments.  Same as args, but you can is a dict so you can
+            use keyword to identify arguments.
+        
+        '''
+        patient = args[0]
+        msg = args[1]
+        
+        #only run if warm up complete
+        if self.env.now < self.args.warm_up:
+            return
+
+        if msg == 'patient_discharged':
+            self.patient_count += 1
+            n = self.patient_count
+            
+            #running calculation for mean bed waiting time
+            self.bed_wait += \
+                (patient.queue_time - self.bed_wait) / n
+
+            #running calc for mean bed utilisation
+            self.bed_occupation_time += patient.treat_time
+
                 
                 
     def run_summary_frame(self):
         
         '''
         Utility function for final metrics calculation.
-        
-        Returns df containining
-        total pts count
-        count of each of pts types
-        bed utilisation
-        mean waiting time of bottom 90% of pts
-        % of pts admitted in <4 hours
+
+        Returns a pandas DataFrame containing summary statistics of the simulation.
         '''
+        
+        # adjust util calculations for warmup period
+        rc_period = self.env.now - self.args.warm_up
+        util = self.bed_occupation_time / (rc_period * self.args.n_beds)
+        
         # create nparray of all queue times, convert to hours
         patients_queue_times = np.array([patient.queue_time * 24 for patient in self.patients])
         
-        #sort array in descending order, drops top 10% of values, calculate the mean 
-        queue_bottom90 = np.mean(np.sort(patients_queue_times)[len(self.patients) // 10:])
-        
-        
-        # calculate proportion of patient with queue time less than 4 hrs
-        percent_4_less = (sum(patients_queue_times <= 4)/len(self.patients))*100
-    
-        #bed utilisation = sum(call durations) / (run length X no. BEDS)
-        util = np.array([patient.treat_time 
-                     for patient in self.patients]).sum() / (RUN_LENGTH * self.args.beds.capacity)
-        
-        average_treat_time = np.array([patient.treat_time 
-                     for patient in self.patients]).sum() / self.patient_count
+        # Find the value at the 90th percentile
+        pct_90 = np.percentile(patients_queue_times, 90)
+
+        # Filter out any values above the 90th percentile
+        filtered_times = patients_queue_times[patients_queue_times <= pct_90]
+
+        # Calculate the mean of the filtered times
+        bed_wait_90 = np.mean(filtered_times) 
         
 
-        df = pd.DataFrame({'1':{'1b Stroke Patient Arrivals':self.stroke_count,
-                                '2 Bottom 90% Mean Treatment Waiting Time (hrs)': queue_bottom90, 
-                                '4 Bed Utilisation (%)': util*100,
-                                '1a Total Patient Arrivals':self.patient_count,
-                                '1d Neuro Patient Arrivals':self.neuro_count,
+        # calculate proportion of patient with queue time less than 4 hrs
+        percent_4_less = (sum(qt <= 4 for qt in patients_queue_times) / len(self.patients)) * 100
+        
+        bed_wait = self.bed_wait * 24
+
+
+        df = pd.DataFrame({'1':{'1a Total Patient Arrivals':self.patient_count,
+                                '1b Stroke Patient Arrivals':self.stroke_count,
                                 '1c TIA Patient Arrivals':self.tia_count,
-                                '5 Mean Total Time in Unit per patient(hrs)':average_treat_time,
-                                '3 Patients Admitted to Unit within 4 hrs of arrival(%)': percent_4_less}})
-        
-        
+                                '1d Neuro Patient Arrivals':self.neuro_count,
+                                '2 Mean Queue Time (hrs)':bed_wait,
+                                '3 Mean Queue Time of Bottom 90% (hrs)': bed_wait_90,
+                                '4 Patients Admitted within 4 hrs of arrival(%)': percent_4_less,
+                                '5 Bed Utilisation (%)': util*100}})
+
+                                
         df = df.T
         df.index.name = 'rep'
         return df
 
-
+    
 # Functions for single and multiple runs
-
 def single_run(scenario, 
                rc_period = RUN_LENGTH, 
                warm_up = 0,
@@ -476,6 +597,8 @@ def single_run(scenario,
     if random_no_set is not None:
         scenario.set_random_no_set(random_no_set)
     
+    scenario.warm_up = warm_up
+    
     # create the model
     model = ASU(scenario)
 
@@ -485,8 +608,6 @@ def single_run(scenario,
     results_summary= model.run_summary_frame()
     
     return results_summary
-
-
 def multiple_replications(scenario, 
                           rc_period=RUN_LENGTH,
                           warm_up=0,
@@ -524,12 +645,13 @@ def multiple_replications(scenario,
     --------
     List
     '''    
-
+    
+    
     if random_no_set is not None:
         rng_sets = [random_no_set + rep for rep in range(n_reps)]
     else:
         rng_sets = [None] * n_reps
-        
+       
     res = Parallel(n_jobs=n_jobs)(delayed(single_run)(scenario, 
                                                       rc_period, 
                                                       warm_up, 
@@ -542,5 +664,4 @@ def multiple_replications(scenario,
     df_results.index = np.arange(1, len(df_results)+1)
     df_results.index.name = 'rep'
     return df_results
-
 
