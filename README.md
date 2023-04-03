@@ -1,5 +1,11 @@
 # ASU-simpy
-The depo contains random code for the final hpdm097 assignment
+
+This project was done by 720090075 Tymur Terletskyi and 720079703 Inni Choi.
+
+There are two ways to run the model.
+№1: Create environment from the binder folder, run jupyter notebook V6.6 (which also contains the lab report). Set seed value to 333 to reproduce results.        
+№2: Create environment from the binder folder, follow instructions in the readme file from streamlit folder. Set seed value to 333 to reproduce results.          
+The obtained results are also duplicated as screenshots of two tables (one deriverd from default parameters, another from all IAT decreased by 10%) and two plots (one justifiyng the warm-up period of 250 selection, another - the assessed number of runs required to obtain valid results).          
 
 Changelog:         
       
