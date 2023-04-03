@@ -17,6 +17,8 @@ V6.1 calculated warm-up period, all metrics are now calculated only after the wa
 V6.2 estimated number of replications needed to achive 0.05 p-value for final results, but only for 2 basic metrics - mean bed waiting time and bed utilisation      
 V6.3 warm_up parameter passed to scenario class, now it's taken into account properly             
 
+V6.4 bottom 90% waiting time wasn't calculating properly, now fine     
+
 ## TO DO:
 
 Taking into account the warm-up period (250 days) and the number of replications (51), recalculate answers to the assignment questions.          
