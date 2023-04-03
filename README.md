@@ -11,7 +11,9 @@ V4.4 implemented multiple run function, seed sets generation for reproducible ru
 V4.5 added more parameters to the summary frame     
 V5.0 simplified the code significantly by storing samples from iat and treatment distributions in 2 separate dictionaries, rather than a separate value for every patient type. type1/type2/type3 replaced with 'stroke'/'tia'/'neuro throughout. there is now single arrival generator function and single treatment function. arrival generator now takes patient type as a parameter that defines future pathway. simplified the summary frame function              
 V5.1 there are now separate functions to get samples outside of treatment() and arrivals_generator()                   
-V5.2 implemented controllable/uncontrollable sampling, updated streamlit file and source code. added the checkbox. error fixed with bed utilisation calculation as the formula was incorrect, n_beds wasn't referred to properly within a class. fixed pts admitted within 4 hours calculation                          
+V5.2 implemented controllable/uncontrollable sampling, updated streamlit file and source code. added the checkbox. error fixed with bed utilisation calculation as the formula was incorrect, n_beds wasn't referred to properly within a class. fixed pts admitted within 4 hours calculation       
+
+V6.0 added warm-up auditor       
 
 ## TO DO:
 
