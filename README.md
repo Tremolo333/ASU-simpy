@@ -17,16 +17,5 @@ V6.1 calculated warm-up period, all metrics are now calculated only after the wa
 V6.2 estimated number of replications needed to achive 0.05 p-value for final results, but only for 2 basic metrics - mean bed waiting time and bed utilisation      
 V6.3 warm_up parameter passed to scenario class, now it's taken into account properly             
 V6.4 bottom 90% waiting time wasn't calculating properly, now fine       
-
 V6.5 cleared up the code          
-
-## TO DO:
-
-Taking into account the warm-up period (250 days) and the number of replications (51), recalculate answers to the assignment questions.          
-Somehow make them reproducible, preferably via streamlit.         
-         
-
-
-      
-      Lab report link: https://docs.google.com/document/d/1u7SbKhrViICDEj4Ie1E0ig8s308FIrtA9Nh5W-4v-yQ/edit?usp=sharing         
-      Link to streamlit github repo: https://github.com/health-data-science-OR/streamlit_tutorial        
+V6.6 included the lab report          
