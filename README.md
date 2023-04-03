@@ -13,19 +13,16 @@ V5.0 simplified the code significantly by storing samples from iat and treatment
 V5.1 there are now separate functions to get samples outside of treatment() and arrivals_generator()                   
 V5.2 implemented controllable/uncontrollable sampling, updated streamlit file and source code. added the checkbox. error fixed with bed utilisation calculation as the formula was incorrect, n_beds wasn't referred to properly within a class. fixed pts admitted within 4 hours calculation       
 V6.0 added warm-up auditor       
-V6.1 calculated warm-up period, all metrics are now calculated only after the warm-up            
+V6.1 calculated warm-up period, all metrics are now calculated only after the warm-up          
+
 V6.2 estimated number of replications needed to achive 0.05 p-value for final results, but only for 2 basic metrics - mean bed waiting time and bed utilisation         
 
 ## TO DO:
 
-from the workshop №6, in a separate file perform the following and modify the source code        
-1) Calculate model warm-up period and take it into account - the amount of time required for the ASU to reach "plateau" - stable in/outflow of patients.     
+Taking into account the warm-up period (250 days) and the number of replications (51), recalculate answers to the assignment questions.          
+Somehow make them reproducible, preferably via streamlit.         
 
-2) Select the number of replications to run to obtain reliable results.        
-
-3) Present the results.          
-
-4) Bring the code to PEP8 standarts, check if it can be simplified.          
+Bring the code to PEP8 standarts, check if it can be simplified.           
 
 
       
