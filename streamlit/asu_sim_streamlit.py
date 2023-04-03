@@ -38,10 +38,10 @@ with st.sidebar:
     reproducible_run = st.checkbox('Reproducible run',
                             help = 'Check for controlled sampling')
     if reproducible_run:
-        rng_set = st.slider("Select seed value", 0, 999)
+        rng_set = st.slider("Select seed value", 0, 999, 333)
     
      # Number of runs
-    replications = st.slider('No. replications', 1, 30, 5,
+    replications = st.slider('No. replications', 1, 100, 51,
                             help = 'Max 50 rep is supported')
 
     # Number of beds
@@ -97,7 +97,8 @@ args.treat_stds = [stroke_treat_std, tia_treat_std, neuro_treat_std]
 if st.button('Simulate ASU'):
     # in this example run a single replication of the model.
     with st.spinner('Simulating the ASU...'):
-        results = multiple_replications(args, n_reps=replications)
+        print(replications)
+        results = multiple_replications(args, n_reps=replications, warm_up = 250, )
 
     st.success('Done!')
 
