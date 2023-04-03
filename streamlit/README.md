@@ -35,7 +35,7 @@ ssh -i [pem_name].pem -CNL localhost:[provided_on_link]:localhost:[provided_on_l
 
 ## Assessment Simulation
 
-The period of interest for each simulation run is 1 year
+Set seed value to 333 to reproduce results.         
 
 ### Primary (essential) research questions
 
