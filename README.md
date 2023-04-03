@@ -13,8 +13,8 @@ V5.0 simplified the code significantly by storing samples from iat and treatment
 V5.1 there are now separate functions to get samples outside of treatment() and arrivals_generator()                   
 V5.2 implemented controllable/uncontrollable sampling, updated streamlit file and source code. added the checkbox. error fixed with bed utilisation calculation as the formula was incorrect, n_beds wasn't referred to properly within a class. fixed pts admitted within 4 hours calculation       
 V6.0 added warm-up auditor       
-
-V6.1 calculated warm-up period, all metrics are now calculated only after the warm-up         
+V6.1 calculated warm-up period, all metrics are now calculated only after the warm-up            
+V6.2 estimated number of replications needed to achive 0.05 p-value for final results, but only for 2 basic metrics - mean bed waiting time and bed utilisation         
 
 ## TO DO:
 
