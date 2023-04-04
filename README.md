@@ -3,7 +3,7 @@
 This project was done by 720090075 Tymur Terletskyi and 720079703 Inni Choi.
 
 There are two ways to run the model:               
-№1: Create environment from the binder folder, run jupyter notebook V6.6 (which also contains the lab report).             
+№1: Create environment from the binder folder, run jupyter notebook V6.7 (which also contains the lab report).             
 №2: Create environment from the binder folder, follow instructions in the readme file from streamlit folder.          
 Set seed value to 333 to reproduce results in both cases.             
 
@@ -30,3 +30,4 @@ V6.3 warm_up parameter passed to scenario class, now it's taken into account pro
 V6.4 bottom 90% waiting time wasn't calculating properly, now fine       
 V6.5 cleared up the code          
 V6.6 included the lab report          
+V6.7 modified ASU class, moved patient types count calculation from the arrivals_generator to the process_event function. so they are only take into account once discharged. there is now a clear distinction between patients who arrived to the unit and the ones admitted. changed col names to admission count, added total arrival count column to the summary frame. only the latter are used for metrics calculation. previously obltained bed utilisation and mean queue time and pts admitted within 4 hours are valid. 
